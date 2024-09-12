@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="community">
+	
+	<resultMap id="postListMap" type="postExt">
+		<id column="POST_NO" property="postNo"/>
+		<result column="CONTENT" property="content"/>
+		<result column="TITLE" property="title"/>	
+		<result column="LIKE_COUNT" property="likeCount"/>
+		<result column="COMMENT_COUNT" property="commentCount"/>
+		<result column="THUMBNAIL" property="thumbnail"/>
+		<!-- 썸네일은 저장된 이미지 이름으로 매핑-->	
+	</resultMap>
+    
+	<!--위험지역제보 목록페이지-->	
+	<select id="selectList" resultMap="postListMap">
+		SELECT 
+		    POST_NO, 
+		    TITLE, 
+		    SUBSTR(CONTENT, 1, 15) || '...' AS CONTENT, 
+		    TO_CHAR(CREATE_DATE) AS CREATE_DATE,
+		    (SELECT COUNT(*) FROM POST_GOOD PG WHERE PG.POST_NO = P.POST_NO) AS LIKE_COUNT,
+		    (SELECT COUNT(*) FROM POST_COMMENT PC WHERE PC.POST_NO = P.POST_NO) AS COMMENT_COUNT,
+		    (SELECT CHANGE_NAME FROM POST_IMG PI WHERE PI.POST_NO = P.POST_NO FETCH FIRST 1 ROWS ONLY) AS THUMBNAIL
+		FROM POST P
+		WHERE STATUS = 'Y'
+		ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<!--위험지역제보 전체 게시글의 개수 조회-->
+	<select id="selectListCount" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM POST
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<resultMap id="postDetailMap" type="postExt">
+		<id column="POST_NO" property="postNo"/>
+		<result column="TITLE" property="title"/>
+		<result column="ROAD_ADDRESS" property="roadAddress"/>
+		<result column="CONTENT" property="content"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="MEMBER_NO"  property="memberNo"/>
+		<result column="NICKNAME" property="nickname"/>
+		<result column="PROFILE" property="profile"/>
+		<result column="LIKE_COUNT" property="likeCount"/>
+		<collection property="postImgs" javaType="List" ofType="postImg">
+			<id  column="IMAGE_NO" property="imageNo"/>
+			<result column="CHANGE_NAME" property="changeName"/>
+			<result column="ORIGINAL_NAME" property="originalName"/>
+		</collection>
+	</resultMap>
+	
+	 <!-- 게시글 상세 조회 --> 
+    <select id="getPostDetail" resultMap="postDetailMap">
+	    SELECT 
+	        P.POST_NO AS POST_NO,
+	        ROAD_ADDRESS,
+	        TITLE, 
+	        CONTENT,
+	        P.CREATE_DATE AS CREATE_DATE,
+	        P.MEMBER_NO AS MEMBER_NO,
+	        (SELECT COUNT(*) FROM POST_GOOD PG WHERE PG.POST_NO = P.POST_NO) AS LIKE_COUNT,
+	        M.NICKNAME AS NICKNAME,
+	        M.PROFILE AS PROFILE,
+            PI.IMAGE_NO AS IMAGE_NO,
+            PI.CHANGE_NAME AS CHANGE_NAME,
+            PI.ORIGINAL_NAME AS ORIGINAL_NAME
+	    FROM POST P
+	    LEFT JOIN MEMBER M ON P.MEMBER_NO = M.MEMBER_NO
+	    LEFT JOIN POST_IMG PI ON P.POST_NO = PI.POST_NO
+	    WHERE P.POST_NO = #{postNo}
+    </select>
+    
+    <!--유저 좋아요 눌렀는지 확인-->
+    <select id="incrementLikeCount" resultType="int">
+    	SELECT COUNT(*) 
+    	FROM POST_GOOD 
+    	WHERE MEMBER_NO = #{memberNo} AND POST_NO = #{postNo}
+    </select>
+   
+   <!--좋아요 증가시키고 DB에 넣기--> 
+   <insert id="setAddCount">
+    INSERT INTO POST_GOOD 
+    VALUES 
+    (	
+		#{postNo},
+     	#{memberNo}
+     )
+   </insert>
+   
+   <!--게시글 현재 좋아요 수 가져오기-->
+   <select id="getLikeCount" resultType="int">
+   	SELECT COUNT(*)
+   	FROM POST_GOOD
+   	WHERE POST_NO = #{postNo}
+   
+   </select>
+   
+    <resultMap id="postCommentMap" type="postCommentExt">
+    	<id column="PC_NO" property="pcNo"/>
+    	<result column="MEMBER_NO" property="memberNo"/>
+    	<result column="POST_NO" property="postNo"/>
+    	<result column="CONTENT" property="content"/>
+    	
+   		<result column="NICKNAME" property="nickname"/>
+    	<result column="PROFILE" property="profile"/>
+    </resultMap>
+    
+    <!--특정 게시글에 대한 댓글 목록 가져오기-->
+    <select id="getCommentsByPostNo" resultMap="postCommentMap">
+    	SELECT 
+    		PC.PC_NO AS PC_NO,
+    		PC.MEMBER_NO AS MEMBER_NO,
+    		PC.POST_NO AS POST_NO,
+    		PC.CONTENT AS CONTENT, 
+            M.NICKNAME AS NICKNAME,
+            M.PROFILE AS PROFILE
+    	FROM POST_COMMENT PC
+        LEFT JOIN MEMBER M ON PC.MEMBER_NO = M.MEMBER_NO
+    	WHERE POST_NO = #{postNo}
+    </select>
+    
+
+	<!--댓글 등록-->
+	<insert id="addComment" parameterType="postComment">
+		INSERT INTO POST_COMMENT
+		VALUES (
+			POST_COMMENT_SEQ.NEXTVAL,
+			#{memberNo}, 
+			#{postNo}, 
+			#{content},
+			SYSDATE
+			)
+	</insert>
+
+
+	<!-- 게시글 작성 -->
+	<insert id="insertPost" useGeneratedKeys="true" parameterType="post">
+		<selectKey order="BEFORE" resultType="int" keyProperty="postNo">
+			SELECT POST_SEQ.NEXTVAL FROM DUAL
+		</selectKey> 
+    INSERT INTO POST
+		VALUES ( #{postNo}, #{memberNo}, #{roadAddress}, #{title}, #{content},
+		DEFAULT, DEFAULT ) 
+  </insert>
+	
+	<!-- 게시글 수정 요청 쿼리문 -->
+	<update id="updatePost" parameterType="postExt">
+	
+		UPDATE POST 
+		SET ROAD_ADDRESS = #{roadAddress},
+			TITLE = #{title}, 
+			CONTENT = #{content},
+			CREATE_DATE = SYSDATE 
+		WHERE POST_NO = #{postNo} AND MEMBER_NO = #{memberNo}
+	
+	</update>
+	
+	<!-- 이미지 저장 -->
+	<insert id="insertPostImg" parameterType="postImg">
+		INSERT INTO POST_IMG
+		VALUES (
+		POST_IMG_SEQ.NEXTVAL,
+		#{postNo},
+		#{originalName},
+		#{changeName}
+		)
+	</insert>
+	
+	<!-- 게시글의 이미지 정보 수정 -->
+	<update id="updatePostImg" parameterType="postImg">
+		
+		UPDATE POST_IMG
+			SET ORIGINAL_NAME = #{originalName},
+			CHANGE_NAME = #{changeName}
+		WHERE IMAGE_NO = #{imageNo}
+		
+	</update>
+
+	
+	<!-- 게시글 수정시 이미지 삭제 -->
+	<delete id="deletePostImg" parameterType="List">
+		DELETE FROM POST_IMG
+		WHERE IMAGE_NO IN 
+		<foreach item="imageNo" collection="list" open="(" separator="," close=")">
+        	#{imageNo}
+		</foreach>
+	</delete>	
+	
+	
+	<!-- 게시글 삭제(상태값 변경)-->
+	<update id="deletePost">
+		UPDATE POST 
+			SET STATUS = 'N'
+		WHERE POST_NO = #{postNo}
+			AND MEMBER_NO = #{memberNo}
+	
+	</update>
+	
+	<!-- 댓글 삭제(상태값없기에 바로 삭제)-->
+	<delete id="deleteComment">
+		DELETE FROM POST_COMMENT
+		WHERE PC_NO = #{pcNo} 
+			AND MEMBER_NO = #{memberNo}
+	</delete>
+	
+	<insert id="reportPost"> 
+	INSERT INTO REPORT (REPORT_NO, RC_NO, MEMBER_NO,
+		POST_NO, COMMENT_NO, REASON, CREATE_DATE) VALUES ( 
+		REPORT_SEQ.NEXTVAL,
+		#{rcNo},
+		#{memberNo},
+		#{postNo},
+		#{commentNo},
+	    #{reason},
+	     SYSDATE ) 
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	
+	<update id="updateComment">
+		UPDATE POST_COMMENT 
+			SET CONTENT = #{content}
+		WHERE POST_NO = #{postNo} 
+			AND MEMBER_NO = #{memberNo}
+			AND PC_NO = #{pcNo}
+		
+	</update>	
+	
+	
+
+</mapper>
+

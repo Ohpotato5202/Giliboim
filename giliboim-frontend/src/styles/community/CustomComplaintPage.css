@@ -1,0 +1,98 @@
+.custom-complaint-page {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;     /* 수평 및 수직 중앙 정렬 */
+    height: calc(100vh - 215px); /* 화면의 전체 높이를 차지 */
+    background-color: #f9f9f9;
+  }
+  
+  .custom-complaint-page h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 20px; /* 밑줄과 텍스트 사이의 간격을 조정 */
+    padding-top: 20px;
+    border-bottom: 1px solid #ddd;
+    display: inline-block; /* 요소의 너비를 조절할 수 있도록 설정 */
+    width: 100%; /* 전체 너비를 사용하도록 설정 */
+    max-width: 600px; /* 최대 너비를 설정하여 중앙 정렬된 상태 유지 */
+  }
+  
+  .custom-complaint-page p {
+    font-size: 17px;
+    text-align: center;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  
+  .complaint-textarea {
+    width: 90%;
+    max-width: 600px;
+    height: 250px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    resize: none;
+    font-size: 14px;
+  }
+  
+  .report-buttons {
+    background-color: #5FA8D3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    max-width: 600px;
+    font-size: 16px;
+  }
+  
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-content {
+    background-color: white;
+    padding: 50px;
+    border-radius: 10px;
+    text-align: center;
+
+  }
+
+  .popup-content p {
+    color: #000;
+    font-size: 20px;
+  }
+  
+  .confirm-button2 {
+    background-color: #5FA8D3;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .cancel-button2 {
+    background-color: #D9D9D9;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

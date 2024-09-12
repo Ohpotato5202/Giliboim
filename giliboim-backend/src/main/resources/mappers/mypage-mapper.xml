@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mypage">
+
+	<update id="updateUser" parameterType="member">
+		UPDATE MEMBER SET
+		PROFILE = #{profile},
+		NICKNAME = #{nickname},
+		PWD = #{pwd},
+		PHONE = #{phone}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+	<select id="findMemberById" parameterType="string" resultType="member">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_NO = #{id}
+	</select>
+
+
+	<select id="findMemberByNo" parameterType="int" resultType="member">
+		SELECT * FROM MEMBER WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+
+	<update id="updateStatusToWithdraw" parameterType="int">
+		UPDATE MEMBER SET
+		STATUS = 'N',
+		MODIFY_DATE = SYSDATE
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+
+	<delete id="deleteTokensByMemberNo" parameterType="int">
+		DELETE FROM TOKEN
+		WHERE member_no = #{memberNo}
+	</delete>
+
+	<select id="friendList" resultType="member">
+           	SELECT MEMBER_NO, NICKNAME, PROFILE
+            FROM MEMBER M 
+            WHERE STATUS = 'Y' AND MEMBER_NO IN 
+	        (
+	            SELECT TO_MEMBER_NO
+	            FROM FRIEND
+	            WHERE FRIEND_CHECK = 'Y' AND FROM_MEMBER_NO = #{memberNo} AND TO_MEMBER_NO IN (
+	                SELECT FROM_MEMBER_NO
+	                FROM FRIEND
+	                WHERE #{memberNo} = TO_MEMBER_NO AND FRIEND_CHECK = 'Y'
+            ))
+	</select>
+	
+	<select id="searchByNickname" resultType="member">
+		SELECT *
+		FROM MEMBER
+		WHERE NICKNAME LIKE '%' || #{nickname} || '%' AND STATUS = 'Y'
+	</select>
+
+	<select id="searchFriend" resultType="int">
+		SELECT COUNT(*)
+		FROM FRIEND
+		WHERE TO_MEMBER_NO = #{memberNo}
+			AND FROM_MEMBER_NO = #{nowMemberNo}
+	</select>
+	
+	<insert id="createFriend">
+		INSERT ALL 
+    		INTO FRIEND VALUES (#{nowMemberNo},#{memberNo},'Y',SYSDATE)
+    		INTO FRIEND VALUES (#{memberNo},#{nowMemberNo},'N',SYSDATE)
+		SELECT *
+		FROM DUAL
+	</insert>
+
+	<update id="updateFriend">
+		UPDATE FRIEND SET 
+		FRIEND_CHECK = 'Y'
+		WHERE TO_MEMBER_NO = #{nowMemberNo}
+			and from_member_no = #{memberNo}
+	</update>
+	
+	<select id="checkFriend" resultType="int">
+		SELECT COUNT(*)
+		FROM FRIEND
+		WHERE TO_MEMBER_NO = #{nowMemberNo} 
+			AND FROM_MEMBER_NO = #{memberNo}
+			AND FRIEND_CHECK = 'Y'
+	</select>
+	
+	<delete id="deleteFriend">
+		DELETE FROM FRIEND
+			WHERE (TO_MEMBER_NO = #{nowMemberNo} AND FROM_MEMBER_NO = #{memberNo}) 
+				OR (TO_MEMBER_NO = #{memberNo} AND FROM_MEMBER_NO = #{nowMemberNo})
+	</delete>
+</mapper>

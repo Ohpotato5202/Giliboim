@@ -1,0 +1,272 @@
+.member-detail-page {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 104px);
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.detail-member-info {
+    display: flex;
+    align-items: flex-start; /* 아이템들을 상단에 정렬 */
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.member-basic-info {
+    display: inline-block;
+}
+
+.detail-member-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 0;
+    margin-right: 20px; /* 이미지와 텍스트 사이의 간격 */
+}
+
+.detail-member-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0; /* 이름과 폰 번호 사이의 불필요한 여백 제거 */
+    line-height: 1; /* 줄 높이를 조절하여 텍스트 간격을 줄임 */
+    border: none
+}
+
+.detail-member-phone {
+    font-size: 20px;
+    color: #141414;
+    margin: 5px 0 0 0; /* 이름과 전화번호 사이의 간격을 설정 */
+    line-height: 1; /* 줄 높이를 조절하여 텍스트 간격을 줄임 */
+    display: block;
+    border: none
+}
+
+.member-stats {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.member-stats td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* 기본 stat-value 스타일 */
+.stat-value input {
+    border: none; /* 테두리 제거 */
+    background: none; /* 배경색 제거 */
+    padding: 0; /* 내부 여백 제거 */
+    margin: 0; /* 외부 여백 제거 */
+    font-size: inherit; /* 부모 요소의 글자 크기 상속 */
+    font-family: inherit; /* 부모 요소의 글꼴 상속 */
+    color: inherit; /* 부모 요소의 글자 색상 상속 */
+    width: 100%; /* 입력 필드가 부모 요소의 너비를 채우도록 */
+    outline: none; /* 포커스 시 나타나는 테두리 제거 */
+}
+
+/* .birthdate-input 클래스에 대한 스타일 */
+.birthdate-input {
+    border: none; /* 테두리 제거 */
+    background: none; /* 배경색 제거 */
+    padding: 0; /* 내부 여백 제거 */
+    margin: 0; /* 외부 여백 제거 */
+    font-size: inherit; /* 부모 요소의 글자 크기 상속 */
+    font-family: inherit; /* 부모 요소의 글꼴 상속 */
+    color: inherit; /* 부모 요소의 글자 색상 상속 */
+    width: 100%; /* 입력 필드가 부모 요소의 너비를 채우도록 */
+    outline: none; /* 포커스 시 나타나는 테두리 제거 */
+}
+
+.stat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #000000;
+    background-color: #f9f9f9;
+    width: 25%;
+}
+
+.stat-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #000000;
+    text-align: left;
+    background-color: #ffffff;
+}
+
+.dropdown-item {
+    position: relative;
+}
+
+.dropdown-button {
+    background: none;
+    border: 1px;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+}
+
+.favorite-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 10px 15px;
+    margin-top: 5px;
+    
+    
+}
+
+.favorite-button {
+    border: 1px solid black;
+    font-family: 'Inter', sans-serif;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    font-size: 12px;
+    color: #000000;
+}
+
+.favorite-button svg {
+    margin-right: 10px;
+}
+
+.member-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: absolute; /* 또는 position: fixed; */
+    bottom: 0;
+    left: 0;
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+}
+
+.action-button {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #000000;
+    border: 1px solid #dad6d6;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.action-button:not(:last-child) {
+    border-right: none; /* 버튼들 사이의 경계선을 제거 */
+}
+
+/* 모달 배경 스타일 */
+.modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* 살짝 어두운 반투명 배경 */
+    z-index: 1000; /* 모달이 최상위에 보이도록 설정 */
+  }
+  
+  /* 모달 콘텐츠 */
+  .modal-content {
+    background-color: #FFFFFF; /* 흰색 배경 */
+    border: 1px solid #7c7a7a; /* 검은색 테두리 */
+    border-radius: 40px; /* 둥근 모서리 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 */
+    padding: 0; /* 모달 내부 여백 제거 */
+    width: 400px; /* 고정 너비 설정 */
+    height: 250px; /* 고정 높이 설정 */
+    position: relative; /* 모달 헤더와 바디를 위치시킬 수 있도록 */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center; /* 텍스트 중앙 정렬 */
+  }
+  
+  /* 모달 헤더 */
+  .modal-header {
+    margin-top: 50px; /* 헤더와 본문 사이 여백 */
+    font-size: 16px; /* 헤더 글자 크기 */
+    font-weight: bold; /* 헤더 글자 두껍게 */
+    color: #333; /* 헤더 글자 색상 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+  }
+  
+  /* 모달 본문 */
+  .modal-body {
+    margin-bottom: 20px; /* 본문과 하단 버튼 사이 여백 */
+    text-align: center; /* 본문 텍스트 중앙 정렬 */
+    font-size: 16px; /* 본문 글자 크기 */
+    color: #000000; /* 본문 글자 색상 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%; /* 본문 영역이 전체를 채우도록 */
+  }
+  
+  /* 모달 버튼 */
+  .modal-body button {
+    background-color: #2192d3; /* 파란색 버튼 배경 */
+    color: rgb(43, 42, 42); /* 버튼 글자색 */
+    font-weight: bold;
+    border: none; /* 버튼 테두리 없음 */
+    padding: 10px 25px; /* 버튼 내 여백 */
+    border-radius: 20px; /* 버튼의 둥근 모서리 */
+    cursor: pointer; /* 커서 모양을 포인터로 변경 */
+    font-size: 16px; /* 버튼 글자 크기 */
+    margin-right: 10px; /* 버튼 사이 여백 */
+    margin-top: 20px; /* 버튼 위에 약간의 여백 추가 */
+    width: 100px; /* 버튼 너비 설정 */
+    height: 40px; /* 버튼 높이 설정 */
+  }
+  
+  /* 모달 취소 버튼 */
+  .modal-body button:last-child {
+    background-color: #D9D9D9; /* 회색 버튼 배경 */
+    color: #333; /* 회색 버튼 글자 색상 */
+  }
+  
+  /* 버튼 컨테이너 */
+  .modal-body .button-container {
+    display: flex;
+    justify-content: center; /* 버튼들을 중앙에 배치 */
+    gap: 10px; /* 버튼 사이 간격 설정 */
+    margin-bottom: 100px; /* 버튼 위에 여백 추가 */
+  }
+  
+  /* 모달 클릭 이벤트 처리 */
+  .modal-container {
+    cursor: pointer; /* 배경 클릭 시 포인터 커서 표시 */
+  }
+  
+  /* 모달 내부 클릭 방지 */
+  .modal-content {
+    cursor: default; /* 모달 콘텐츠 내부는 기본 커서 */
+  }
+  

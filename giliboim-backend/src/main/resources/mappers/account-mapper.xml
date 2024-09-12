@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="account">
+	
+	<select id="insertMemberCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE #{key} = #{value}
+	</select>
+		
+	<select id="memberName" resultType="member">
+		SELECT NICKNAME, PROFILE 
+		FROM MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<select id="verifyDuplicationCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM VERIFY
+		WHERE PHONE = #{phoneNumber}
+	</select>
+	
+	<select id="verifyDuplicationCount" resultType="int">
+		SELECT COUNT(*)
+		FROM VERIFY
+		WHERE PHONE = #{phoneNumber} AND VERIFY_DATE >= SYSDATE - INTERVAL '1' HOUR
+	</select>
+	
+	<select id="verifyDuplicationDate" resultType="int">
+		SELECT 10000 + TO_NUMBER(TO_CHAR(VERIFY_DATE, 'HH24')) * 100 + TO_NUMBER(TO_CHAR(VERIFY_DATE, 'MI'))
+		FROM VERIFY
+		WHERE PHONE = #{phoneNumber}
+  			AND VERIFY_DATE = (
+      			SELECT MAX(VERIFY_DATE)
+      			FROM VERIFY
+      			WHERE PHONE = #{phoneNumber}
+  				)
+	</select>
+	
+	<insert id="verifyPrevention">
+		<selectKey keyProperty="resultDate" resultType="date" order="BEFORE">
+			SELECT TO_DATE(TO_CHAR(SYSDATE, 'YYYYMMDD') || #{resultDay}, 'YYYYMMDDHH24MI')
+			FROM DUAL
+		</selectKey>
+		INSERT ALL 
+    		INTO VERIFY VALUES (#{phoneNumber},NULL, #{resultDate})
+    		INTO VERIFY VALUES (#{phoneNumber},NULL, #{resultDate})
+    		INTO VERIFY VALUES (#{phoneNumber},NULL, #{resultDate})
+    		INTO VERIFY VALUES (#{phoneNumber},NULL, #{resultDate})
+		SELECT *
+		FROM DUAL
+	</insert>
+	
+	<select id="verifyCodeCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM VERIFY
+		WHERE VERIFY_NO = #{code}
+		AND PHONE = #{phoneNumber}
+		AND VERIFY_DATE = (
+    		SELECT MAX(VERIFY_DATE)
+    		FROM VERIFY
+    		WHERE PHONE = #{phoneNumber}
+		)
+	</select>
+	
+	<insert id="verifyInsert">
+		INSERT INTO VERIFY VALUES(
+			#{phoneNumber},
+			#{sentCode},
+			SYSDATE
+		)
+	</insert>
+	
+	<delete id="verifyCodeDelete">
+		DELETE FROM VERIFY
+		WHERE PHONE = #{phone}
+	</delete>
+	
+	<insert id="insertMember">
+		INSERT INTO MEMBER VALUES(
+			MEMBER_SEQ.NEXTVAL,
+			1,
+			NULL,
+			#{id},
+			#{phone},
+			#{pwd},
+			#{name},
+			#{nickname},
+			#{birthdate},
+			DEFAULT,
+			NULL,
+			DEFAULT,
+			DEFAULT,
+			NULL
+		)
+		<selectKey keyProperty="memberNo" resultType="int" order="AFTER"> 
+			SELECT MEMBER_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertSetting">
+		INSERT INTO SETTING VALUES(
+			#{memberNo}, 
+			DEFAULT,
+			DEFAULT,
+			DEFAULT
+		)
+	</insert>
+	
+	<select id="login" resultType="member">
+		SELECT *
+		FROM MEMBER
+		WHERE ID = #{id} AND STATUS = 'Y'
+	</select>
+	
+	<select id="phoneCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE PHONE=#{phone}
+	</select>
+	
+	<select id="searchId" resultType="string">
+		SELECT ID
+		FROM MEMBER
+		WHERE PHONE = #{phone}
+	</select>
+	
+	<select id="searchPwd" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE PHONE = #{phone} AND ID = #{userId}
+	</select>
+	
+	<update id="changePwd">
+		UPDATE MEMBER SET
+		PWD = #{pwd}
+		WHERE ID = #{id}
+	</update>
+	
+	<insert id="insertToken">
+		INSERT INTO TOKEN VALUES(
+			TOKEN_SEQ.NEXTVAL,
+			#{tokenId},
+			#{userId},
+			DEFAULT
+		)
+	</insert>
+	
+	<select id="searchToken" resultType="int">
+		SELECT COUNT(*)
+		FROM TOKEN
+		WHERE MEMBER_NO = #{userId}
+	</select>
+	
+	<update id="updateToken">
+		UPDATE TOKEN SET
+		CREATE_DATE = SYSDATE,
+		TOKEN_ID = #{tokenId}
+		WHERE MEMBER_NO = #{userId}
+	</update>
+	
+	<select id="validateRefreshToken" resultType="int">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_NO = (
+			SELECT MEMBER_NO
+			FROM TOKEN
+			WHERE TOKEN_ID = #{tokenId}
+			AND FLOOR(ABS((CREATE_DATE - SYSDATE) * 24)) = 0
+           )
+	</select>
+	
+	<select id="searchMember" resultType="member">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_NO = #{result}
+	</select>
+	
+	<select id="socialLogin" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		JOIN SOCIAL_TYPE USING(ST_NO)
+		WHERE SOCIAL_TYPE.NAME = #{social}
+    		AND ID = #{memberId}
+	</select>
+	
+	<select id="selectSocialMember" resultType="member">
+		SELECT *
+		FROM MEMBER
+		JOIN SOCIAL_TYPE USING(ST_NO)
+		WHERE SOCIAL_TYPE.NAME = #{social}
+    		AND ID = #{memberId}
+	</select>
+	
+	<insert id="insertSocialMember">
+		INSERT INTO MEMBER VALUES(
+			MEMBER_SEQ.NEXTVAL,
+			1,
+			1,		
+			#{memberId},
+			'kakao',
+			'galbigi',
+			'kakao'||DBMS_RANDOM.RANDOM,
+			'kakao'||DBMS_RANDOM.RANDOM,
+			'20000000',
+			DEFAULT,
+			NULL,
+			DEFAULT,
+			DEFAULT,
+			NULL
+		)
+	</insert>
+	
+	<delete id="deleteToken">
+		DELETE FROM TOKEN
+		WHERE MEMBER_NO = #{memberNo}
+	</delete>
+</mapper>

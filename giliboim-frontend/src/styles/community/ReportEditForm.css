@@ -1,0 +1,130 @@
+.report-form-container {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 215px); /* Header와 Footer를 제외한 높이 */
+    padding: 30px;
+    background-color: #f9f9f9;
+    
+}
+
+.report-form {
+    flex-grow: 1; /* 중앙 폼이 남은 공간을 최대한 차지하도록 */
+    display: flex;
+    flex-direction: column;
+   margin-top: 30px;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.photo-upload-section {
+    display: flex;
+    flex-wrap: wrap; /* 여러 장의 사진을 추가하기 위해 wrap 사용 */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.photo-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.photo-thumbnail {
+    width: 80px;
+    height: 80px;
+    border-radius: 20%;
+    background-color: #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.photo-preview {
+    position: relative;
+    width: 80px; /* 원하는 너비 */
+    height: 80px; /* 원하는 높이 */
+    background-color: #e0e0e0; /* 배경 색상 */
+    display: flex; /* Flexbox 사용 */
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    text-align: center; /* 텍스트가 여러 줄일 경우 가운데 정렬 */
+    border-radius: 20%; /* 모서리를 둥글게 */
+    font-size: 15px;
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20%;
+}
+
+.remove-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    color: gray;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.location-section {
+    margin-bottom: 20px;
+}
+
+.title-section {
+    margin-bottom: 20px;
+}
+
+.content-section {
+    margin-bottom: 20px;
+}
+
+.typeText {
+    width: 92%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+textarea {
+    height: 200px;
+}
+
+.buttons-section {
+    display: flex;
+    justify-content: center; /* 버튼들을 중앙에 정렬 */
+    gap: 50px; /* 버튼 사이 간격 설정 (여기서 10px은 예시, 원하는 값으로 조정 가능) */
+    margin-top: 50px; /* 버튼 위쪽의 공백 줄이기 */
+    margin-bottom: 10px; /* 버튼 아래쪽의 공백 줄이기 */
+ 
+}
+
+.submit-button, .cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  
+}
+
+.submit-button {
+    background-color: #5FA8D3;
+    color: black;
+    
+}
+
+.cancel-button {
+    background-color: #ccc;
+}

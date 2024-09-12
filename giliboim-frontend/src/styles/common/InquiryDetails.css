@@ -1,0 +1,54 @@
+.container {
+    padding: 20px; /* 패딩을 조금 더 여유 있게 */
+    max-width: 100%;
+    box-sizing: border-box;
+    min-height: calc(100vh - 154px);
+}
+
+.inquiry-title, .inquiry-content, .admin-response {
+    margin-bottom: 25px; /* 각 섹션 사이의 여백을 더 크게 */
+    padding-bottom: 15px; /* 각 섹션의 하단에 여백을 추가 */
+    border-bottom: 2px solid #e0e0e0; /* 섹션 하단에 선 추가 */
+}
+
+.inquiry-title {
+    border-top: 2px solid #e0e0e0; /* 첫 번째 섹션 상단에도 선 추가 */
+}
+
+.title-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 1.1rem; /* 제목 크기를 조금 더 크게 */
+}
+
+.text-box {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    width: 100%;
+    height: auto;
+    padding: 12px; /* 패딩을 더 넉넉하게 */
+    border: 2px solid #ccc; /* 선 굵기를 조금 더 두껍게 */
+    border-radius: 10px; /* 박스의 모서리를 더 둥글게 */
+    font-size: 1rem;
+    box-sizing: border-box;
+    resize: none;
+    background-color: #fafafa; /* 배경색을 약간 밝게 */
+}
+
+.admin-response {
+    background-color: #f1f1f1;
+    height: 200px;
+    padding: 18px; /* 패딩을 더 넉넉하게 */
+    border-radius: 10px;
+    font-size: 1rem;
+    border: 2px solid #ddd; /* 관리자의 답변 박스에도 테두리 추가 */
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+}

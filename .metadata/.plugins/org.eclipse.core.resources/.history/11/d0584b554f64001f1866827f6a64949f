@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdminMapper">
+
+	<!-- Member 관련 쿼리 -->
+	<select id="allAccount" resultType="member">
+		SELECT
+		MEMBER_NO AS memberNo,
+		NICKNAME,
+		PHONE,
+		PROFILE,
+		NAME,
+		STATUS
+		FROM MEMBER
+	</select>
+
+	<select id="selectAccount" resultType="member">
+		SELECT
+		MEMBER_NO AS memberNo,
+		NICKNAME,
+		PHONE,
+		TO_CHAR(BIRTHDATE) AS birthDate,
+		TO_CHAR(ENROLL_DATE) AS enrollDate,
+		NAME,
+		STATUS
+		FROM MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+	<select id="selectAccountCount" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+	</select>
+
+	<select id="selectAccountByName" resultType="member">
+		SELECT
+		MEMBER_NO AS memberNo,
+		NICKNAME,
+		PHONE,
+		TO_CHAR(BIRTHDATE) AS birthDate,
+		TO_CHAR(ENROLL_DATE) AS enrollDate,
+		NAME,
+		STATUS
+		FROM MEMBER
+		WHERE NAME = #{name}
+	</select>
+
+	<update id="updateAccount" parameterType="member">
+		UPDATE MEMBER
+		SET
+		NICKNAME = #{nickname},
+		PHONE = #{phone},
+		PROFILE = #{profile},
+		NAME = #{name},
+		STATUS = #{status},
+		BIRTHDATE = #{birthdate}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+	<update id="suspendAccount" parameterType="int">
+		UPDATE MEMBER
+		SET STATUS = 'S'
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+	<delete id="deleteAccount" parameterType="int">
+		UPDATE MEMBER
+		SET STATUS = 'D'
+		WHERE MEMBER_NO = #{memberNo}
+	</delete>
+
+	<!-- 추가된 회원 상태 전환 쿼리 -->
+	<update id="toggleMemberStatus" parameterType="int">
+		UPDATE MEMBER
+		SET STATUS = CASE WHEN STATUS = 'Y' THEN 'S' ELSE 'Y' END
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+	<!-- 문의 관련 쿼리 -->
+	<select id="selectInquiriesCount" resultType="int">
+		SELECT COUNT(*)
+		FROM INQUIRE
+	</select>
+
+	<resultMap id="inquiryMap" type="inquiryExt">
+		<id column="INQUIRE_NO" property="inquireNo" />
+		<result column="MEMBER_NO" property="memberNo" />
+		<result column="NICKNAME" property="nickname" />
+		<result column="TITLE" property="title" />
+		<result column="INQUIRE_CONTENT" property="inquireContent" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="STATUS" property="status" />
+		<result column="ANSWER_CONTENT" property="answerContent" />
+	</resultMap>
+
+	<select id="getInquiries" resultMap="inquiryMap">
+		SELECT
+		INQUIRE_NO,
+		I.MEMBER_NO AS MEMBER_NO,
+		NICKNAME,
+		TITLE,
+		INQUIRE_CONTENT,
+		TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE,
+		I.STATUS AS STATUS,
+		ANSWER_CONTENT
+		FROM INQUIRE I
+		LEFT JOIN MEMBER M ON (I.MEMBER_NO = M.MEMBER_NO)
+		ORDER BY INQUIRE_NO DESC
+	</select>
+
+	<select id="getInquiryById" parameterType="int" resultType="inquire">
+		SELECT
+		INQUIRE_NO AS inquireNo,
+		MEMBER_NO AS memberNo,
+		TITLE AS title,
+		INQUIRE_CONTENT AS inquireContent,
+		TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS createDate,
+		STATUS AS status,
+		ANSWER_CONTENT AS answerContent
+		FROM INQUIRE
+		WHERE INQUIRE_NO = #{inquireNo}
+	</select>
+
+	<update id="saveReply">
+		UPDATE INQUIRE
+		SET ANSWER_CONTENT = #{reply}
+		WHERE INQUIRE_NO = #{inquireNo}
+	</update>
+
+	<delete id="deleteInquiry" parameterType="int">
+		DELETE FROM INQUIRE
+		WHERE INQUIRE_NO = #{inquireNo}
+	</delete>
+
+	<!-- 게시물 관련 쿼리 -->
+	<select id="selectAllPosts" resultType="post">
+		SELECT 
+		    POST_NO AS postNo,
+		    MEMBER_NO AS memberNo,
+		    ROAD_ADDRESS AS roadAddress,
+		    TITLE AS title,
+		    CONTENT AS content,
+		    STATUS AS status,
+		    CREATE_DATE AS createDate,
+		    NULL AS reportNo
+		FROM 
+		    POST
+		UNION ALL
+		SELECT 
+		    R.POST_NO AS postNo,
+		    R.MEMBER_NO AS memberNo,
+		    ROAD_ADDRESS AS roadAddress,
+		    TITLE AS title,
+		    CONTENT AS content,
+		    STATUS AS status,
+		    R.CREATE_DATE AS createDate,
+		    REPORT_NO AS reportNo
+		FROM 
+		    REPORT R
+		LEFT JOIN POST P ON R.POST_NO = P.POST_NO
+		ORDER BY 
+	    	createDate DESC
+	</select>
+	
+	<select id="selectPostCount" resultType="int">
+	    SELECT COUNT(*)
+	    FROM POST
+	</select>
+	
+	<!-- 게시물 삭제 -->
+	<delete id="deletePost">
+		DELETE FROM POST WHERE POST_NO = #{postNo}
+	</delete>
+
+	<!-- 게시물 상세 조회 쿼리 -->
+    <select id="getPostDetail" parameterType="int" resultType="Post">
+        SELECT 
+	        POST_NO as postNo, 
+	        MEMBER_NO as memberNo, 
+	       	ROAD_ADDRESS as roadAddress, 
+	        TITLE as title, 
+	        CONTENT as content, 
+	        STATUS as status, 
+	        CREATE_DATE as createDate
+        FROM POST 
+        WHERE POST_NO = #{postNo}
+    </select>
+
+	<!-- 신고 관련 쿼리 -->
+	<select id="selectAllReports" resultType="Report">
+		SELECT
+		REPORT_NO AS reportNo,
+		RC_NO AS rcNo,
+		MEMBER_NO AS memberNo,
+		POST_NO AS postNo,
+		COMMENT_NO AS commentNo,
+		REASON AS reason,
+		CREATE_DATE AS createDate
+		FROM REPORT
+	</select>
+
+	<!-- 게시물에 대한 신고 정보 조회 -->
+	<select id="selectReportsByPostNo" resultType="Report">
+	    SELECT 
+	        r.rc_no,                              -- REPORT 테이블의 RC_NO
+	        rc.category,                          -- REPORT_CATEGORY 테이블의 CATEGORY
+	        r.create_date AS report_create_date,   -- REPORT 테이블의 CREATE_DATE (신고일)
+	        p.create_date AS post_create_date,     -- POST 테이블의 CREATE_DATE (게시물 작성일)
+	        p.post_no,                            -- 게시물 번호
+	        p.member_no,                          -- 작성자 회원 번호
+	        m.nickname,                           -- MEMBER 테이블의 NICKNAME
+	        r.reason,                             -- REPORT 테이블의 신고 사유 (예시)
+	        r.report_no                           -- REPORT 테이블의 REPORT_NO
+	    FROM 
+	        report r
+	    JOIN 
+	        post p ON r.post_no = p.post_no        -- REPORT와 POST 테이블을 POST_NO 기준으로 조인
+	    JOIN 
+	        member m ON p.member_no = m.member_no  -- POST와 MEMBER 테이블을 MEMBER_NO 기준으로 조인
+	    JOIN
+	        report_category rc ON r.rc_no = rc.rc_no  -- REPORT와 REPORT_CATEGORY 테이블을 RC_NO 기준으로 조인
+	    WHERE 
+	        r.post_no = #{postNo} 
+    </select>
+
+	<!-- 신고 삭제 -->
+	<delete id="deleteReport">
+		DELETE FROM REPORT WHERE REPORT_NO = #{reportNo}
+	</delete>
+
+</mapper>

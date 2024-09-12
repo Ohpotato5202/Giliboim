@@ -1,0 +1,82 @@
+.admin-ask-list-container {
+    overflow-y: auto; /* 세로 스크롤 활성화 */
+    background-color: #ffffff; /* 배경을 흰색으로 설정 */
+    margin: 0 auto; /* 가운데 정렬 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+    height: calc(100vh - 104px);
+  }
+  
+  .ask-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: none /* 두께를 추가하려면 이 속성을 수정 */ 
+  }
+  
+  .ask-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #e6e6e6;
+    background-color: #ffffff; /* 항목의 배경색도 흰색으로 설정 */
+    min-height: 50px; /* 항목의 최소 높이 설정 */
+  }
+  
+  /* 빈 항목에 대한 스타일 */
+  .ask-item.empty {
+    justify-content: center; /* 텍스트를 가운데 정렬 */
+    color: #999999; /* 빈 항목 텍스트 색상 */
+    font-style: italic; /* 텍스트 기울이기 */
+  }
+  
+  .ask-item .checkbox,
+  .ask-item .delete-button {
+    flex-shrink: 0; /* 크기 축소 방지 */
+  }
+  
+  .ask-item .checkbox svg,
+  .ask-item .delete-button svg {
+    width: 20px; /* 크기 조정 */
+    height: 20px;
+  }
+  
+  .ask-item .delete-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  
+  .ask-item .delete-button svg {
+    display: block;
+  }
+  
+  .ask-item span {
+    flex-grow: 1;
+    margin-left: 10px;
+    color: #1e1e1e;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .pagination button.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  
+  

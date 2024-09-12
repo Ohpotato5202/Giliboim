@@ -1,0 +1,206 @@
+.reported-post-container {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 189px);
+    background: #ffffff;
+    padding-top: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-section {
+    margin-bottom: 30px;
+    padding-bottom: 7px;
+    border-bottom: 2px solid #ccc;
+}
+
+/* 작성자와 작성일을 가로로 정렬 */
+.post-row-horizontal {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    margin-right: 80px;
+}
+
+.post-row-item {
+    flex: 1;
+    margin-right: 100px;
+    height: 30px; /* 세로 길이 줄이기 */
+}
+
+.post-row-item:last-child {
+    margin-right: 0;
+}
+
+.post-row-item label {
+    margin-bottom: 10px;
+    margin-left: 15px;
+}
+
+.post-row-item input {
+    width: 100%;
+    max-width: 100px; /* 인풋 박스 크기 조정 */
+    box-sizing: border-box;
+    padding: 5px;
+    height: 30px; /* 세로 길이 줄이기 */
+    margin-left: 15px; /* 인풋 박스를 오른쪽으로 이동 */
+    border-radius: 10px; /* 모서리를 둥글게 설정 */
+    border: 1px solid #ccc; /* 인풋 박스 테두리 추가 */
+}
+
+/* 내용과 신고 내용을 세로로 정렬 */
+.post-row-vertical,
+.report-row-vertical {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0px;
+    padding: 10px;
+}
+
+.title input {
+    width: 94%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    height: 30px; /* 세로 크기 조정 */
+    border-radius: 10px; /* 모서리를 둥글게 설정 */
+    border: 1px solid #ccc; /* 인풋 박스 테두리 추가 */
+}
+
+.title label {
+    margin-left: 15px;
+}
+
+.post-row-vertical label,
+.report-row-vertical label {
+    margin-bottom: 5px;
+}
+
+.post-row-vertical input,
+.report-row-vertical input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 10px;
+    height: 100px; /* 세로 크기 조정 */
+    border-radius: 10px; /* 모서리를 둥글게 설정 */
+    border: 1px solid #ccc; /* 인풋 박스 테두리 추가 */
+}
+
+/* 신고자, 신고일, 신고 분류를 가로로 정렬 */
+.report-row-horizontal {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.report-row-item {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.report-row-item:last-child {
+    margin-right: 0;
+}
+
+.report-row-item label {
+    margin-bottom: 5px;
+    margin-left: 15px;
+}
+
+.report-row-item input {
+    width: 100%;
+    max-width: 100px; /* 인풋 박스 크기 조정 */
+    box-sizing: border-box;
+    padding: 5px;
+    margin-left: 15px; /* 인풋 박스를 오른쪽으로 이동 */
+    border-radius: 10px; /* 모서리를 둥글게 설정 */
+    border: 1px solid #ccc; /* 인풋 박스 테두리 추가 */
+}
+
+.admin-post {
+    color: black; /* 글자 색상 */
+}
+
+.post-lists {
+    color: black; /* 글자 색상 */
+}
+
+/* 공통 버튼 스타일 정의 */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    margin-top: 33px;
+    width: 100%;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    border-radius: 27px;
+    font-size: 15px;
+    font-weight: bold; /* 텍스트 굵기 */
+    color: black; /* 텍스트 색상 */
+    flex: 1; /* 모든 버튼의 크기를 동일하게 설정 */
+    margin: 5px; /* 버튼 간격 추가 */
+    height: 50px; /* 모든 버튼의 높이를 동일하게 설정 */
+}
+
+/* 버튼 내부 콘텐츠 스타일 */
+.btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* 아이콘과 텍스트 사이의 간격 */
+}
+
+.btn-contents {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0px;
+    margin-right: 10px;
+}
+
+/* 모든 텍스트에 동일한 크기 적용 */
+.admin-post,
+.post-lists {
+    font-size: 15px; /* 모든 버튼의 글자 크기를 동일하게 설정 */
+    font-weight: bold; /* 글자 굵기 */
+}
+
+/* SVG 아이콘 크기 설정 */
+.btn-content svg {
+    width: 24px; /* 아이콘 크기를 동일하게 설정 */
+    height: 24px; /* 아이콘 크기를 동일하게 설정 */
+}
+
+/* SVG 아이콘 크기 설정 */
+.btn-contents svg {
+    width: 37px;
+    height: 30px;
+}
+
+/* 개별 버튼 색상 설정 */
+.btn.blue {
+    background-color: #78a6d8; /* 파란색 배경 */
+}
+
+.btn.green {
+    background-color: #78E5CC; /* 녹색 배경 */
+}
+
+.btn.red {
+    background-color: #e05e6b; /* 빨간색 배경 */
+}
+
+.btn.gray {
+    background-color: #6c757d; /* 회색 배경 */
+}

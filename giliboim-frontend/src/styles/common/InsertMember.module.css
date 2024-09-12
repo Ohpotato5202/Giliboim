@@ -1,0 +1,89 @@
+.registration-container {
+    background-color: #D8ECFA;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 1000px;
+    height: calc(100vh - 40px);
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .logo {
+    width: 30%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .registration-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-group {
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+    margin-bottom: 15px;
+  }
+  
+  .input-group input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    margin: 0px;
+  }
+  
+  .input-group button {
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    width: 100px;
+  }
+  
+  .buttonNoCheck{
+    background-color: #ccc;
+  }
+
+  .buttonCheck{
+    background-color: greenyellow;
+  }
+
+  .input-group .timer {
+    margin-right: 10px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .insertInput {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .submit-button {  
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .submit-buttonCheck{
+    background-color: #00A4E8;
+  }
+  
+/*   
+  .submit-button:hover {
+    background-color: #007BB5;
+  } */
+  

@@ -1,0 +1,113 @@
+package com.kh.giliboim.admin.model.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.RowBounds;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.kh.giliboim.account.model.vo.Inquire;
+import com.kh.giliboim.account.model.vo.Member;
+import com.kh.giliboim.common.model.vo.PageInfo;
+import com.kh.giliboim.community.model.vo.Post;
+import com.kh.giliboim.community.model.vo.Report;
+
+import lombok.RequiredArgsConstructor;
+
+@Repository
+@RequiredArgsConstructor
+public class AdminDaoImpl implements AdminDao {
+
+    private final SqlSessionTemplate sqlSession;
+
+    // 회원 관리 구현
+    @Override
+    public List<Member> allAccount(PageInfo pi) {
+        int offset = (pi.getPageNo() - 1) * pi.getPageLimit();
+        int limit = pi.getPostLimit();
+        RowBounds rowBounds = new RowBounds(offset, limit);
+        return sqlSession.selectList("AdminMapper.allAccount", null, rowBounds);
+    }
+
+    @Override
+    public Member selectAccount(int memberNo) {
+        return sqlSession.selectOne("AdminMapper.selectAccount", memberNo);
+    }
+
+    @Override
+    public void updateAccount(Member member) {
+        sqlSession.update("AdminMapper.updateAccount", member);
+    }
+
+    @Override
+    public void suspendAccount(int memberNo) {
+        sqlSession.update("AdminMapper.suspendAccount", memberNo);
+    }
+
+    @Override
+    public void deleteAccount(int memberNo) {
+        sqlSession.delete("AdminMapper.deleteAccount", memberNo);
+    }
+
+    // 문의 관리 구현
+    @Override
+    public List<Inquire> getInquiries(PageInfo pi) {
+        int offset = (pi.getPageNo() - 1) * pi.getPageLimit();
+        int limit = pi.getPostLimit();
+        RowBounds rowBounds = new RowBounds(offset, limit);
+        return sqlSession.selectList("AdminMapper.getInquiries", null, rowBounds);
+    }
+
+    @Override
+    public void deleteInquiry(int inquireNo) {
+        sqlSession.delete("AdminMapper.deleteInquiry", inquireNo);
+    }
+
+    @Override
+    public Inquire getInquiryById(int inquireNo) {
+        return sqlSession.selectOne("AdminMapper.getInquiryById", inquireNo);
+    }
+
+    @Override
+    public void saveReply(Map<String, Object> param) {
+        sqlSession.update("AdminMapper.saveReply", param);
+    }
+
+    @Override
+    public void toggleMemberStatus(int memberNo) {
+        sqlSession.update("AdminMapper.toggleMemberStatus", memberNo);
+    }
+
+    @Override
+    public int selectInquiriesCount() {
+        return sqlSession.selectOne("AdminMapper.selectInquiriesCount");
+    }
+
+    @Override
+    public int selectAccountCount() {
+        return sqlSession.selectOne("AdminMapper.selectAccountCount");
+    }
+
+    // 게시물 관리 구현
+    @Override
+    public List<Post> getAllPosts() {
+        return sqlSession.selectList("AdminMapper.selectAllPosts");
+    }
+
+    @Override
+    public void deletePost(int postNo) {
+        sqlSession.delete("AdminMapper.deletePost", postNo);
+    }
+
+    // 신고 관리 구현
+    @Override
+    public List<Report> getAllReports() {
+        return sqlSession.selectList("AdminMapper.selectAllReports");
+    }
+
+    @Override
+    public void deleteReport(int reportNo) {
+        sqlSession.delete("AdminMapper.deleteReport", reportNo);
+    }
+}

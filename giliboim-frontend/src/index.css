@@ -1,0 +1,11 @@
+body {
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  max-width: 1000px;
+}
+
+
+
+button {
+  cursor: pointer;
+}

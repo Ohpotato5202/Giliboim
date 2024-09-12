@@ -1,0 +1,78 @@
+.Withdraw-container {
+    font-family: Arial, sans-serif;
+    height: calc(100vh - 204px);
+    padding-bottom: 50px; /* 하단 공간 추가 */
+}
+
+.Withdraw-header {
+    text-align: center;
+    padding: 30px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    font-size: 25px;
+    margin-bottom: 30px; /* 제목과 아래 요소 사이 간격 추가 */
+}
+
+.Instructions {
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center; /* 텍스트를 중앙 정렬 */
+    margin-bottom: 10px;
+}
+
+.Instructions-1 {
+    font-size: 18px;
+    line-height: 1.6; /* 줄 간격을 늘려 가독성 향상 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
+    padding: 20px 30px; /* 텍스트와 컨테이너 사이의 여백 */
+    color: #4D4B4B;
+    margin-top: 0; /* 상단 마진을 제거하여 Instructions와 간격 조정 */
+}
+
+.Withdraw-menu {
+    padding: 20px;
+    font-size: 18px;
+    border-top: 1px solid #ccc;
+    margin-top: 40px; /* 메뉴와 상단 요소 사이의 간격 조정 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
+}
+
+.input-box {
+    width: 80%; /* 입력 필드의 너비를 줄여 중앙으로 조정 */
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    margin-top: 20px;
+    margin-bottom: 5px; /* 입력 필드와 안내 텍스트 사이 간격 추가 */
+    display: block; /* 입력 필드를 블록 요소로 설정하여 세로로 배치 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-box::placeholder {
+    font-size: 14px;
+    color: #999;
+}
+
+.delete-button {
+    background-color: #008fbf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px; /* 버튼과 입력 필드 사이의 간격 조정 */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+.delete-button:hover {
+    background-color: #006f9a; /* 호버 시 버튼 색상 변경 */
+}

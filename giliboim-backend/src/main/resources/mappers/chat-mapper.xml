@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="chat">
+
+	<select id="selectLoginMember" resultType="member">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+	<select id="chatRoomListSearch" resultType="chatRoom">
+		SELECT *
+		FROM CHAT_ROOM_MEMBER
+		JOIN MEMBER USING(MEMBER_NO)
+		WHERE CHAT_ROOM_NO IN (
+		SELECT
+		CHAT_ROOM_NO
+		FROM CHAT_ROOM_MEMBER
+		WHERE MEMBER_NO = #{memberNo}) AND NAME LIKE '%'||#{keyword}||'%'
+	</select>
+
+
+<select id="selectChatRooms" resultType="chatRoom">
+    SELECT * FROM
+    (SELECT CRM.CHAT_ROOM_NO, CC.CHAT_TEXT AS LAST_MESSAGE, M.NICKNAME, M.PROFILE, CC.CREATE_DATE AS LAST_MESSAGE_TIME, ROW_NUMBER() OVER(PARTITION BY CRM.MEMBER_NO ORDER BY CC.CREATE_DATE DESC) AS RNK
+    FROM CHAT_ROOM_MEMBER CRM
+    LEFT JOIN CHAT_COMMENT CC ON CC.CHAT_ROOM_NO = CRM.CHAT_ROOM_NO 
+    LEFT JOIN MEMBER M ON M.MEMBER_NO = CRM.MEMBER_NO
+    WHERE CRM.MEMBER_NO != #{memberNo} AND CRM.CHAT_ROOM_NO IN (
+        SELECT CHAT_ROOM_NO
+        FROM CHAT_ROOM_MEMBER
+        WHERE MEMBER_NO = #{memberNo})) 
+    WHERE RNK = 1
+    ORDER BY LAST_MESSAGE_TIME DESC
+</select>
+
+<insert id="openChatRoom" useGeneratedKeys="true"> 
+		INSERT INTO CHAT_ROOM
+		VALUES( CHAT_ROOM_SEQ.NEXTVAL, DEFAULT ) 
+		<selectKey keyProperty="chatRoomNo" resultType="int" order="AFTER">
+			SELECT CHAT_ROOM_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	
+
+	<insert id="insertChatMessage" useGeneratedKeys="true"> INSERT INTO
+		CHAT_COMMENT VALUES (CHAT_COMMENT_SEQ.NEXTVAL, #{chatRoomNo},
+		#{memberNo}, #{chatText}, SYSDATE ) <selectKey
+			keyProperty="chatCommentNo" resultType="int" order="AFTER">
+			SELECT CHAT_COMMENT_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+
+	<insert id="joinChatRoom">
+		INSERT INTO CHAT_ROOM_MEMBER
+		VALUES (
+		#{memberNo},
+		#{chatRoomNo}
+		)
+	</insert>
+
+	<select id="selectUser" resultType="member">
+		SELECT
+		MEMBER_NO,
+		NICKNAME,
+		PROFILE,
+		STATUS
+		FROM MEMBER
+		LEFT JOIN CHAT_ROOM_MEMBER USING(MEMBER_NO)
+		WHERE MEMBER_NO = #{memberNo} AND CHAT_ROOM_NO = #{chatRoomNo}
+	</select>
+
+	<select id="selectMessages" resultType="chatComment">
+		SELECT
+		CHAT_TEXT,
+		TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE,
+		MEMBER_NO,
+		NICKNAME,
+		PROFILE
+		FROM CHAT_COMMENT
+		LEFT JOIN MEMBER USING (MEMBER_NO)
+		WHERE CHAT_ROOM_NO = #{chatRoomNo}
+
+	</select>
+
+	<select id="selectChatMessage" resultType="chatComment">
+		SELECT
+		CHAT_TEXT,
+		TO_CHAR(CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE,
+		MEMBER_NO,
+		NICKNAME,
+		PROFILE
+		FROM CHAT_COMMENT
+		LEFT JOIN MEMBER USING (MEMBER_NO)
+		WHERE CHAT_COMMENT_NO = #{chatCommentNo}
+	</select>
+
+	<select id="selectChatRoomMembers" resultType="member">
+		SELECT
+		MEMBER_NO,
+		NICKNAME,
+		PROFILE,
+		STATUS
+		FROM CHAT_ROOM_MEMBER
+		LEFT JOIN MEMBER USING(MEMBER_NO)
+		WHERE CHAT_ROOM_NO = #{chatRoomNo}
+	</select>
+
+	<delete id="exitMember">
+		DELETE FROM CHAT_ROOM_MEMBER
+		WHERE CHAT_ROOM_NO = #{chatRoomNo} AND
+		MEMBER_NO = #{memberNo}
+	</delete>
+
+	<update id="updateUserStatus">
+		UPDATE CHAT_ROOM_MEMBER SET
+		USER_STATUS= #{userStatus}
+		WHERE CHAT_ROOM_NO = #{chatRoomNo}
+		AND USER_NO =#{userNo}
+	</update>
+
+
+	<insert id="openChatRoomMember">
+		INSERT ALL 
+    		INTO CHAT_ROOM_MEMBER VALUES (#{chatRoomNo},#{nowMemberNo})
+    		INTO CHAT_ROOM_MEMBER VALUES (#{chatRoomNo},#{memberNo})
+		SELECT *
+		FROM DUAL
+	</insert>
+</mapper>
+
+

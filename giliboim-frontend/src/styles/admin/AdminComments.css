@@ -1,0 +1,83 @@
+.admin-comment-container {
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  height: calc(100vh - 164px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden; 
+}
+
+.filter-menu {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.filter-menu div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.filter-menu .active {
+  background-color: #d4e2ff;
+  font-weight: bold;
+}
+
+.comment-list {
+  flex-grow: 1;
+  width: 100%;
+  overflow-y: auto;
+  padding: 10px 0;
+}
+
+.comment-item {
+  display: flex;
+  align-items: flex-start; /* 수정: center에서 flex-start로 변경 */
+  justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  cursor: pointer; /* 클릭 가능하도록 커서 변경 */
+}
+
+.comment-icon {
+  width: 50px;
+  text-align: center;
+}
+
+.comment-content {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.icon-label {
+  font-size: 12px; /* 동일한 스타일 추가 */
+  color: #555;
+  margin-top: 5px;
+}
+
+.comment-author { /* 동일한 스타일 추가 */
+  font-size: 15px; /* 작성자 이름 폰트 크기 */
+  font-weight: bold; /* 작성자 이름 굵게 */
+  color: #000000; /* 작성자 이름 색상 */
+  margin-bottom: 5px; /* 작성자 이름과 게시글 내용 간의 간격 */
+}
+
+.comment-text { /* 동일한 스타일 추가 */
+  font-size: 15px; /* 게시글 내용 폰트 크기 */
+  color: #2e2d2d; /* 게시글 내용 색상 */
+}
+
+.comment-delete-button {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 18px;
+}

@@ -1,0 +1,86 @@
+.ask-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  height: calc(100vh - 194px); 
+}
+
+.ask-page h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 20px; /* 밑줄과 텍스트 사이의 간격을 조정 */
+  border-bottom: 1px solid #ddd;
+  display: inline-block; /* 요소의 너비를 조절할 수 있도록 설정 */
+  width: 100%; /* 전체 너비를 사용하도록 설정 */
+  max-width: 600px; /* 최대 너비를 설정하여 중앙 정렬된 상태 유지 */
+}
+
+
+.title-box {
+  width: 90%;
+  max-width: 600px;
+  margin-bottom: 30px; /* 추가: 제목 박스와 내용 박스 사이의 간격 */
+  margin-top: 30px;
+}
+
+.content-box {
+  width: 90%;
+  max-width: 600px;
+  margin-bottom: 20px; /* 추가: 내용 박스와 버튼 사이의 간격 */
+  margin-top: 30px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 95%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #5FA8D3;
+}
+
+textarea.form-control {
+  height: 250px;
+  resize: none;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100px;
+  margin: 0 10px;
+}
+
+.submit-button {
+  background-color: #5FA8D3;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #D9D9D9;
+  color: white;
+}

@@ -1,0 +1,95 @@
+.inquiry-list {
+    max-width: 1000px;
+    padding: 16px;
+    box-sizing: border-box;
+    min-height: calc(100vh - 154px); /* 헤더와 푸터를 제외한 높이 */
+
+  }
+ 
+  a{
+    word-wrap: break-word; /* 긴 단어가 있으면 줄바꿈 */
+    overflow-wrap: break-word; /* 긴 단어가 있으면 줄바꿈 */
+    white-space: pre-wrap; /* 공백과 줄바꿈을 유지하면서 자동 줄바꿈 */
+    height: auto; /* 높이를 내용에 맞게 자동 조정 */
+    text-decoration: none;
+    color: black;
+
+  }
+  .inquiry-items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .inquiry-item {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    background-color: #f9f9f9;
+  }
+  
+  .inquiry-item.normal .inquiry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .inquiry-title {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .inquiry-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+  }
+  
+  /* 답변 대기중 - 회색 버튼 */
+  .inquiry-status.pending {
+    background-color: #d3d3d3; /* 회색 */
+    color: #000; /* 검정색 글씨 */
+  }
+  
+  /* 답변 완료 - 파란색 버튼 */
+  .inquiry-status.completed {
+    background-color: #007bff; /* 파란색 */
+    color: white; /* 흰색 글씨 */
+  }
+  
+  .inquiry-content {
+    color: #666;
+    margin-top: 8px;
+  }
+  
+  .inquiry-item.deleted {
+    background-color: #ffe6e6;
+    color: #ff4d4d;
+    text-align: center;
+  }
+  
+
+  
+  .inquiry-item.deleted .inquiry-content {
+    display: none;
+  }
+  
+  .new-inquiry-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .new-inquiry-button button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .new-inquiry-button button:hover {
+    background-color: #0056b3;
+  }

@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdminMapper">
+
+    <!-- ========================================================= -->
+    <!-- Member 관련 쿼리: 회원 정보를 조회, 업데이트 및 삭제하는 쿼리들 -->
+    <!-- ========================================================= -->
+
+    <!-- 전체 회원 정보 조회 -->
+    <select id="allAccount" resultType="member">
+        SELECT
+        MEMBER_NO AS memberNo,
+        NICKNAME,
+        PHONE,
+        PROFILE,
+        NAME,
+        STATUS
+        FROM MEMBER
+    </select>
+
+    <!-- 특정 회원 정보 조회 -->
+    <select id="selectAccount" resultType="member">
+        SELECT
+        MEMBER_NO AS memberNo,
+        NICKNAME,
+        PHONE,
+        TO_CHAR(BIRTHDATE) AS birthDate,
+        TO_CHAR(ENROLL_DATE) AS enrollDate,
+        NAME,
+        STATUS
+        FROM MEMBER
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
+
+    <!-- 전체 회원 수 조회 -->
+    <select id="selectAccountCount" resultType="int">
+        SELECT COUNT(*)
+        FROM MEMBER
+    </select>
+
+    <!-- 이름으로 회원 정보 조회 -->
+    <select id="selectAccountByName" resultType="member">
+        SELECT
+        MEMBER_NO AS memberNo,
+        NICKNAME,
+        PHONE,
+        TO_CHAR(BIRTHDATE) AS birthDate,
+        TO_CHAR(ENROLL_DATE) AS enrollDate,
+        NAME,
+        STATUS
+        FROM MEMBER
+        WHERE NAME = #{name}
+    </select>
+
+    <!-- 회원 정보 업데이트 -->
+    <update id="updateAccount" parameterType="member">
+        UPDATE MEMBER
+        SET
+        NICKNAME = #{nickname},
+        PHONE = #{phone},
+        PROFILE = #{profile},
+        NAME = #{name},
+        STATUS = #{status},
+        BIRTHDATE = #{birthdate}
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+
+    <!-- 회원 계정 일시 중지 -->
+    <update id="suspendAccount" parameterType="int">
+        UPDATE MEMBER
+        SET STATUS = 'S'
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+
+    <!-- 회원 계정 삭제 (상태를 'D'로 변경) -->
+    <delete id="deleteAccount" parameterType="int">
+        UPDATE MEMBER
+        SET STATUS = 'D'
+        WHERE MEMBER_NO = #{memberNo}
+    </delete>
+
+    <!-- 회원 상태 전환 ('Y'와 'S' 상태 간 전환) -->
+    <update id="toggleMemberStatus" parameterType="int">
+        UPDATE MEMBER
+        SET STATUS = CASE WHEN STATUS = 'Y' THEN 'S' ELSE 'Y' END
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+
+    <!-- ========================================================= -->
+    <!-- 문의 관련 쿼리: 문의 정보를 조회, 업데이트 및 삭제하는 쿼리들 -->
+    <!-- ========================================================= -->
+
+    <!-- 전체 문의 수 조회 -->
+    <select id="selectInquiriesCount" resultType="int">
+        SELECT COUNT(*)
+        FROM INQUIRE
+    </select>
+
+    <!-- 문의 결과 맵핑 정의 -->
+    <resultMap id="inquiryMap" type="inquiryExt">
+        <id column="INQUIRE_NO" property="inquireNo" />
+        <result column="MEMBER_NO" property="memberNo" />
+        <result column="NICKNAME" property="nickname" />
+        <result column="TITLE" property="title" />
+        <result column="INQUIRE_CONTENT" property="inquireContent" />
+        <result column="CREATE_DATE" property="createDate" />
+        <result column="STATUS" property="status" />
+        <result column="ANSWER_CONTENT" property="answerContent" />
+    </resultMap>
+
+    <!-- 모든 문의 정보 조회 -->
+    <select id="getInquiries" resultMap="inquiryMap">
+        SELECT
+        INQUIRE_NO,
+        I.MEMBER_NO AS MEMBER_NO,
+        NICKNAME,
+        TITLE,
+        INQUIRE_CONTENT,
+        TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE,
+        I.STATUS AS STATUS,
+        ANSWER_CONTENT
+        FROM INQUIRE I
+        LEFT JOIN MEMBER M ON (I.MEMBER_NO = M.MEMBER_NO)
+        ORDER BY INQUIRE_NO DESC
+    </select>
+
+    <!-- 특정 문의 조회 -->
+    <select id="getInquiryById" parameterType="int" resultType="inquire">
+        SELECT
+        INQUIRE_NO AS inquireNo,
+        MEMBER_NO AS memberNo,
+        TITLE AS title,
+        INQUIRE_CONTENT AS inquireContent,
+        TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS createDate,
+        STATUS AS status,
+        ANSWER_CONTENT AS answerContent
+        FROM INQUIRE
+        WHERE INQUIRE_NO = #{inquireNo}
+    </select>
+
+    <!-- 문의 답변 저장 -->
+    <update id="saveReply">
+        UPDATE INQUIRE
+        SET ANSWER_CONTENT = #{reply}
+        WHERE INQUIRE_NO = #{inquireNo}
+    </update>
+
+    <!-- 문의 삭제 -->
+    <delete id="deleteInquiry" parameterType="int">
+        DELETE FROM INQUIRE
+        WHERE INQUIRE_NO = #{inquireNo}
+    </delete>
+
+    <!-- ========================================================= -->
+    <!-- 게시물 관련 쿼리: 게시물 정보를 조회 및 삭제하는 쿼리들 -->
+    <!-- ========================================================= -->
+
+    <!-- 모든 게시물 조회 -->
+    <select id="selectAllPosts" resultType="post">
+        <choose>
+            <!-- 'all'일 때 모든 게시글과 신고 게시글을 모두 가져옴 -->
+            <when test="category == 'all'">
+                SELECT 
+                    POST_NO AS postNo,
+                    MEMBER_NO AS memberNo,
+                    ROAD_ADDRESS AS roadAddress,
+                    TITLE AS title,
+                    CONTENT AS content,
+                    STATUS AS status,
+                    CREATE_DATE AS createDate,
+                    NULL AS reportNo
+                FROM 
+                    POST
+                UNION ALL
+                SELECT 
+                    R.POST_NO AS postNo,
+                    R.MEMBER_NO AS memberNo,
+                    P.ROAD_ADDRESS AS roadAddress,
+                    P.TITLE AS title,
+                    P.CONTENT AS content,
+                    P.STATUS AS status,
+                    R.CREATE_DATE AS createDate,
+                    R.REPORT_NO AS reportNo
+                FROM 
+                    REPORT R
+                LEFT JOIN POST P ON R.POST_NO = P.POST_NO
+                WHERE P.POST_NO IS NOT NULL
+                ORDER BY createDate DESC
+            </when>
+
+            <!-- 'nomal'일 때 일반 게시글만 가져옴 -->
+            <when test="category == 'nomal'">
+                SELECT 
+                    POST_NO AS postNo,
+                    MEMBER_NO AS memberNo,
+                    ROAD_ADDRESS AS roadAddress,
+                    TITLE AS title,
+                    CONTENT AS content,
+                    STATUS AS status,
+                    CREATE_DATE AS createDate,
+                    NULL AS reportNo
+                FROM 
+                    POST
+                ORDER BY createDate DESC
+            </when>
+
+            <!-- 'declaration'일 때 신고 게시글만 가져옴 -->
+            <when test="category == 'declaration'">
+                SELECT 
+                    R.POST_NO AS postNo,
+                    R.MEMBER_NO AS memberNo,
+                    P.ROAD_ADDRESS AS roadAddress,
+                    P.TITLE AS title,
+                    P.CONTENT AS content,
+                    P.STATUS AS status,
+                    R.CREATE_DATE AS createDate,
+                    R.REPORT_NO AS reportNo
+                FROM 
+                    REPORT R
+                LEFT JOIN POST P ON R.POST_NO = P.POST_NO
+                WHERE P.POST_NO IS NOT NULL
+                ORDER BY createDate DESC
+            </when>
+        </choose>
+    </select>
+
+    <!-- 게시물 수 조회 -->
+    <select id="selectPostCount" resultType="int">
+        <if test="category == 'nomal'">
+            SELECT COUNT(*) 
+            FROM POST 
+        </if>
+        <if test="category == 'declaration'">
+            SELECT COUNT(*)
+            FROM REPORT
+            WHERE POST_NO IS NOT NULL
+        </if>
+        <if test="category == 'all'">
+            SELECT COUNT(*)
+            FROM (
+                SELECT POST_NO
+                FROM POST
+                UNION ALL
+                SELECT POST_NO
+                FROM REPORT
+                WHERE POST_NO IS NOT NULL
+            )
+        </if>
+    </select>
+
+    
+    <!-- 게시물 삭제 -->
+    <delete id="deletePost">
+        DELETE FROM POST WHERE POST_NO = #{postNo}
+    </delete>
+
+    <!-- 게시물 상세 조회 -->
+    <select id="getPostDetail" parameterType="int" resultType="Post">
+        SELECT 
+            POST_NO as postNo, 
+            MEMBER_NO as memberNo, 
+            ROAD_ADDRESS as roadAddress, 
+            TITLE as title, 
+            CONTENT as content, 
+            STATUS as status, 
+            CREATE_DATE as createDate
+        FROM POST 
+        WHERE POST_NO = #{postNo}
+    </select>
+
+    <!-- ========================================================= -->
+    <!-- 게시물 신고 관련 쿼리: 게시물에 대한 신고 정보를 조회 및 삭제하는 쿼리들 -->
+    <!-- ========================================================= -->
+
+    <!-- 모든 신고 조회 -->
+    <select id="selectAllReports" resultType="Report">
+         SELECT *
+            FROM (
+                SELECT *
+                FROM REPORT
+                JOIN REPORT_CATEGORY USING(RC_NO)
+                WHERE POST_NO =  #{postNo}
+                ORDER BY CREATE_DATE DESC
+            )
+            WHERE ROWNUM = 1
+    </select>
+
+    <!-- 게시물에 대한 신고 정보 조회 -->
+    <select id="selectReportsByPostNo" resultType="com.kh.giliboim.community.model.vo.Report">
+        SELECT 
+            r.report_no AS reportNo,
+            r.rc_no AS rcNo,
+            rc.category AS category, <!-- category 정보를 추가 -->
+            r.member_no AS memberNo,
+            r.post_no AS postNo,
+            r.comment_no AS commentNo,
+            r.reason AS reason,
+            r.create_date AS createDate
+        FROM 
+            report r
+        JOIN 
+            post p ON r.post_no = p.post_no
+        JOIN 
+            member m ON r.member_no = m.member_no
+        JOIN
+            report_category rc ON r.rc_no = rc.rc_no
+        WHERE 
+            r.post_no = #{postNo}
+    </select>
+
+    <!-- 신고 삭제 -->
+    <delete id="deletePostDetail">
+        DELETE FROM REPORT WHERE REPORT_NO = #{reportNo}
+    </delete>
+    
+    
+    <!-- ========================================================= -->
+    <!-- 댓글 관련 쿼리: 댓글에 대한 신고 정보를 조회 및 삭제하는 쿼리들 -->
+    <!-- ========================================================= -->
+
+
+    <!-- 댓글 수 조회 -->
+    <select id="selectCommentCount" resultType="int">
+        <choose>
+            <when test="category == 'all'">
+                SELECT 
+                (    SELECT COUNT(*)
+                    FROM POST_COMMENT) +
+                (    SELECT COUNT(*) 
+                    FROM REPORT 
+                    WHERE COMMENT_NO IS NOT NULL) AS COUNT
+                FROM DUAL
+            </when>
+            <when test="category == 'nomal'">
+                SELECT COUNT(*)
+                FROM POST_COMMENT
+            </when>
+            <when test="category == 'declaration'">
+                SELECT COUNT(*)
+                FROM report
+                WHERE COMMENT_NO IS NOT NULL
+            </when>
+        </choose>
+    </select>
+
+    <!-- 모든 댓글 조회 -->
+    <select id="getAllComments" resultType="postComment">
+        <choose>
+            <when test="category == 'all'">
+                SELECT
+                    PC_NO,
+                    MEMBER_NO,
+                    POST_NO,
+                    CONTENT,
+                    NULL AS REPORT_NO,
+                    CREATE_DATE
+                FROM POST_COMMENT
+                UNION ALL
+                SELECT 
+                    PC_NO,
+                    P.MEMBER_NO,
+                    P.POST_NO,
+                    P.CONTENT,
+                    REPORT_NO,
+                    R.CREATE_DATE
+                FROM POST_COMMENT P
+                JOIN REPORT R ON P.PC_NO = R.COMMENT_NO 
+                WHERE COMMENT_NO IS NOT NULL
+                ORDER BY CREATE_DATE DESC
+            </when>
+            <when test="category == 'nomal'">
+                SELECT *
+                FROM POST_COMMENT
+            </when>
+            <when test="category == 'declaration'">
+                SELECT p.*, report_no
+                FROM POST_COMMENT p
+                JOIN REPORT r ON p.pc_no = r.comment_no
+            </when>
+        </choose>
+    </select>
+    
+    <!-- 댓글 상세 조회 -->
+	<select id="getCommentDetail" parameterType="int" resultType="PostComment">
+	    SELECT 
+	        PC_NO AS pcNo, 
+	        MEMBER_NO AS memberNo, 
+	        POST_NO AS postNo, 
+	        CONTENT AS content, 
+	        CREATE_DATE AS createDate
+	    FROM POST_COMMENT 
+	    WHERE PC_NO = #{commentNo}
+	</select>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment">
+	    DELETE FROM POST_COMMENT WHERE PC_NO = #{commentNo}
+	</delete>
+    
+    
+</mapper>

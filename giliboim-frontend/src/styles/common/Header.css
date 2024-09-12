@@ -1,0 +1,21 @@
+#main-header{
+    height: 50px; /* 헤더의 고정 높이 */
+    width: 100%;
+    background-color: #cce7ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    position: relative;
+  }
+
+  .App {
+    max-width: 1000px;
+    margin: 0 auto;
+    border: 1px solid #ccc; /* 선택사항: 외곽선 추가 */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 선택사항: 그림자 추가 */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }

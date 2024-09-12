@@ -1,0 +1,60 @@
+.admin-member-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 104px); /* 상단과 하단 네비게이션바 제외 */
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.member-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.member-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 0%;
+    margin-right: 15px;
+}
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.member-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.member-phone {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #666666;
+}
+
+.status-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    width: 51px;
+    height: 31px;
+    cursor: pointer; /* 클릭 가능한 상태로 만듭니다 */
+}
+

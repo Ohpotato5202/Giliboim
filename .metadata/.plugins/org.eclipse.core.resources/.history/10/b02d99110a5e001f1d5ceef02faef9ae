@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdminMapper">
+
+    <!-- Member 관련 쿼리 -->
+    <select id="allAccount" resultType="com.kh.giliboim.account.model.vo.Member">
+        SELECT 
+            MEMBER_NO AS memberNo,
+            NICKNAME,
+            PHONE,
+            PROFILE,
+            NAME,
+            STATUS
+        FROM MEMBER
+    </select>
+
+    <select id="selectAccount" resultType="com.kh.giliboim.account.model.vo.Member">
+        SELECT    
+            MEMBER_NO AS memberNo,
+            NICKNAME,
+            PHONE,
+            TO_CHAR(BIRTHDATE) AS birthDate,
+            TO_CHAR(ENROLL_DATE) AS enrollDate,
+            NAME,
+            STATUS
+        FROM MEMBER
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
+
+    <select id="selectAccountByName" resultType="com.kh.giliboim.account.model.vo.Member">
+        SELECT    
+            MEMBER_NO AS memberNo,
+            NICKNAME,
+            PHONE,
+            TO_CHAR(BIRTHDATE) AS birthDate,
+            TO_CHAR(ENROLL_DATE) AS enrollDate,
+            NAME,
+            STATUS
+        FROM MEMBER
+        WHERE NAME = #{name}
+    </select>
+
+    <update id="updateAccount" parameterType="com.kh.giliboim.account.model.vo.Member">
+        UPDATE MEMBER
+        SET 
+            NICKNAME = #{nickname},
+            PHONE = #{phone},
+            PROFILE = #{profile},
+            NAME = #{name},
+            STATUS = #{status}
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+
+    <update id="suspendAccount" parameterType="int">
+        UPDATE MEMBER
+        SET STATUS = 'S'
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+
+    <delete id="deleteAccount" parameterType="int">
+        DELETE FROM MEMBER
+        WHERE MEMBER_NO = #{memberNo}
+    </delete>
+    
+    <!-- 문의 관련 쿼리 -->
+    <select id="getInquiries" resultType="com.kh.giliboim.account.model.vo.Inquire">
+        SELECT 
+            INQUIRE_NO AS inquireNo, 
+            MEMBER_NO AS memberNo, 
+            TITLE AS title, 
+            INQUIRE_CONTENT AS inquireContent, 
+            TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS createDate,
+            STATUS AS status,
+            ANSWER_CONTENT AS answerContent
+        FROM INQUIRE
+    </select>
+
+    <select id="getInquiryById" parameterType="int" resultType="com.kh.giliboim.account.model.vo.Inquire">
+        SELECT 
+            INQUIRE_NO AS inquireNo, 
+            MEMBER_NO AS memberNo, 
+            TITLE AS title, 
+            INQUIRE_CONTENT AS inquireContent, 
+            TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS createDate,
+            STATUS AS status,
+            ANSWER_CONTENT AS answerContent
+        FROM INQUIRE
+        WHERE INQUIRE_NO = #{inquireNo}
+    </select>
+
+    <update id="saveReply" parameterType="map">
+        UPDATE INQUIRE
+        SET ANSWER_CONTENT = #{param2}
+        WHERE INQUIRE_NO = #{param1}
+    </update>
+
+    <delete id="deleteInquiry" parameterType="int">
+        DELETE FROM INQUIRE 
+        WHERE INQUIRE_NO = #{inquireNo}
+    </delete>
+    
+</mapper>

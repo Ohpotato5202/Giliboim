@@ -1,0 +1,10 @@
+/* Main 스타일 */
+.main {
+  position: relative;
+  height: calc(100vh - 154px); /* Header와 Footer의 높이를 제외한 전체 높이 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* 스크롤바를 숨깁니다 */
+}

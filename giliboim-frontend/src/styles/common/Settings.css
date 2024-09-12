@@ -1,0 +1,69 @@
+/* 기존 CSS 수정 및 추가 */
+
+/* 전체 레이아웃을 관리하는 container를 추가 */
+.app {
+    display: flex;
+    flex-direction: column;
+  }
+  .setting{
+    min-height: calc(100vh - 154px); /* 헤더와 푸터를 제외한 높이 */
+
+  }
+
+  /* content 영역의 flex-grow를 설정해 푸터가 항상 하단에 고정되도록 */
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  /* footer를 항상 하단에 고정 */
+
+  /* 데스크탑에서 푸터가 가운데 정렬되도록 */
+  @media (min-width: 1024px) {
+   
+  }
+  
+  .setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .setting-item:last-child {
+    border-bottom: none;
+  }
+  
+  .setting-item input[type="checkbox"] {
+    width: 40px;
+    height: 20px;
+    position: relative;
+    appearance: none;
+    background: #ccc;
+    border-radius: 20px;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .setting-item input[type="checkbox"]:checked {
+    background: #4caf50;
+  }
+  
+  .setting-item input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.3s;
+  }
+  
+  .setting-item input[type="checkbox"]:checked::before {
+    transform: translateX(20px);
+  }
+  

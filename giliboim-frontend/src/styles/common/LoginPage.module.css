@@ -1,0 +1,111 @@
+.container {
+    background-color: #D8ECFA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    max-width: 1000px;
+  }
+  
+  .login-container {
+    width: 80%;
+    text-align: center;
+    background-color: D8ECFA;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .logo {
+    width: 60%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .login-button {
+    width: 85%;
+    padding: 10px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .kakao-button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #FEE500;
+    color: #3c1e1e;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 85%;
+  }
+  
+  .links {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .link {
+    color: #666;
+    text-decoration: none;
+    margin: 0 5px;
+  }
+
+  .fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+  }
+
+  .fade-out2{
+    display: none;
+  }
+
+  .loader {
+    position: absolute;
+    max-width: 1000px;
+    width: 100%;
+    height: 100%;
+    background-color: #CFE4F2;
+  }
+
+  .loader img{
+    position: absolute;
+    left: 50%;
+    top : 50%;
+    transform: translate(-50%,-50%);
+  }
+
+  @media (min-aspect-ratio: 1/1) {
+    .loader img{
+      height: 70%;
+      width: auto; /* 가로가 더 길 때 이미지의 폭을 50%로 설정 */
+    }
+  }
+  
+  /* 세로가 더 길 때 (Portrait) */
+  @media (max-aspect-ratio: 1/1) {
+    .loader img{
+      width: 70%;
+      height: auto;
+    }
+  }

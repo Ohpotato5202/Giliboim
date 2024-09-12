@@ -1,0 +1,70 @@
+.container {
+  padding: 20px;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: calc(100vh - 154px); /* 헤더와 푸터를 제외한 높이 */
+  background-color: #ffffff;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc; /* 섹션 사이에 선 추가 */
+  padding-bottom: 10px;
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+  background-color: #f0f0f0;
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.menu-section {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 10px;
+  border-bottom: 1px solid #ddd; /* 메뉴 아이템 사이에 선 추가 */
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.menu-link{
+  text-decoration: none;
+  color: black;
+}
+
+
+.menu-item.logout {
+  color: red;
+  font-weight: bold;
+  justify-content: center;
+}
+
+.arrow {
+  font-size: 1.2rem;
+  color: #999;
+}
+
+@media (min-width: 768px) {
+  .container {
+      max-width: 1000px;
+      margin: 0 auto;
+  }
+}

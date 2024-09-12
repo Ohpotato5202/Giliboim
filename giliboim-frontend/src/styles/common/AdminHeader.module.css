@@ -1,0 +1,152 @@
+/* 공통 헤더 스타일 */
+header {
+  height: 50px; /* 기본 헤더의 고정 높이 */
+  width: 100%;
+  background-color: #cce7ff; /* 기존 헤더의 배경색 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* App 컨테이너 스타일 */
+.App {
+  max-width: 650px;
+  margin: 0 auto;
+  border: 1px solid #ccc; /* 선택사항: 외곽선 추가 */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 선택사항: 그림자 추가 */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* 내부 스크롤 문제 방지 */
+  padding-top: 50px;
+}
+
+/* AdminHeader 스타일 */
+.admin-member-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #CAE9FF; /* AdminHeader의 배경색 */
+  height: 60px; /* AdminHeader의 고정 높이 */
+  box-sizing: border-box;
+  position: relative;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  left: -2px;
+  top: 1px;
+}
+
+.admin-member-header h1 {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: #000000;
+  margin-bottom: 8px;
+  margin-left: 28px;
+} 
+
+.header-icons {
+  display: flex;
+  align-items: center;
+}
+
+/* Notification Icon 스타일 */
+.notification-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 13px;
+  position: relative;
+}
+
+.notification-icon svg {
+  fill: #1D1B20; /* 아이콘의 기본 색상 */
+  width: 24px;
+  height: 24px;
+  transition: fill 0.2s ease; /* 색상 변경 시 애니메이션 추가 */
+}
+
+.notification-icon:hover svg {
+  fill: #007BFF; /* 호버 시 아이콘 색상 변경 */
+}
+
+/* Search Icon 및 Bar 스타일 */
+.search-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.admin-search {
+  display: flex;
+  align-items: center;
+  border: 1px solid #000000;
+  border-radius: 25px;
+  padding: 5px 10px;
+  margin-left: 3px;
+  margin-right: -10px;
+}
+
+.admin-search input {
+  border: none;
+  width: 100px;
+  margin-right: 0px;
+  background-color: transparent;
+}
+
+/* 햄버거 메뉴 버튼 스타일 */
+.menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: -10px; /* 왼쪽 간격을 없앰 */
+  margin-right: 5px; /* 오른쪽 간격을 줄임 */
+}
+
+/* 사이드 메뉴 스타일 */
+.side-menu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 200px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1001; /* 사이드 메뉴가 다른 요소 위에 보이도록 설정 */
+}
+
+/* 사이드 메뉴가 열렸을 때 보여지는 상태 */
+.side-menu.open {
+  display: block;
+}
+
+/* 사이드 메뉴 항목 스타일 */
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.menu-item:hover {
+  background-color: #f0f0f0;
+}

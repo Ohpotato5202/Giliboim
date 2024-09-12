@@ -1,0 +1,78 @@
+.admin-page {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 104px);
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .admin-item {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+  }
+  
+  .menu-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+    margin-left: 30px;
+  }
+  
+  .menu-text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    margin-left: 30px;
+    font-size: 18px;
+    color: #000000;
+  }
+
+  .line {
+    width: calc(100% - 20px);
+    top: 300px;
+    margin: 0 auto;
+    margin-top: 30px;   
+    border: 1px solid #c0bcbc;
+  }
+
+  .lines{
+    height: 100px;
+    width: 100%;
+  }
+
+  .community-submenu {
+    padding-left: 90px; /* 서브메뉴의 들여쓰기 */
+    margin-top: 30px;   
+}
+
+.submenu-item {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.submenu-text-container{
+    margin-left: 10px;
+    margin-top: 10px;
+    height: 30px;
+    border-bottom: 1px solid #c0bcbc;
+}
+
+.submenu-text{
+    margin-left: 0px;
+}
+
+.expand-icon {  
+    margin-left: 60%;
+    @media screen and (max-width: 1000px) {
+        color: white;
+        margin-left: 40%;
+      }
+    
+}
